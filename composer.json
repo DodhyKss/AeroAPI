@@ -1,9 +1,21 @@
 {
-    "name": "aero/framework",
-    "description": "Aero Framework",
+    "name": "aero/aeroapi",
+    "description": "Minimalist, High-Performance PHP MVC Framework with Laravel Eloquent ORM & High-Precision API Benchmarking Suite.",
+    "type": "project",
+    "license": "MIT",
     "require": {
-        "illuminate/database": "11.0",
-        "illuminate/events": "11.0"
+        "php": ">=8.0",
+        "illuminate/database": "^11.0",
+        "illuminate/events": "^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Core\\": "core/",
+            "App\\": "app/"
+        },
+        "files": [
+            "core/helpers.php"
+        ]
     },
     "authors": [
         {
@@ -11,12 +23,7 @@
         }
     ],
     "config": {
-        "preferred-install": "dist"
-    },
-    "repositories": {
-        "packagist": {
-            "type": "composer",
-            "url": "https://packagist.mirrors.sjtug.sjtu.edu.cn"
-        }
+        "preferred-install": "dist",
+        "sort-packages": true
     }
 }
