@@ -276,19 +276,38 @@ class Application
 
     public function handleException($exception)
     {
+        $message = $exception->getMessage();
+        $file = $exception->getFile();
+        $line = $exception->getLine();
+        $trace = $exception->getTraceAsString();
+        $debug = filter_var($_ENV['APP_DEBUG'] ?? false, FILTER_VALIDATE_BOOLEAN);
+
+        if (php_sapi_name() === 'cli') {
+            $isColorsSupported = DIRECTORY_SEPARATOR === '/' || getenv('ANSICON') !== false || getenv('term') === 'xterm' || (defined('STDOUT') && function_exists('posix_isatty') && posix_isatty(STDOUT));
+            if ($isColorsSupported) {
+                echo "\n\033[1;31m[ERROR] " . get_class($exception) . "\033[0m\n";
+                echo "\033[1mMessage:\033[0m " . $message . "\n";
+                echo "\033[1mFile:\033[0m " . $file . " (line " . $line . ")\n";
+                if ($debug) {
+                    echo "\n\033[1mStack Trace:\033[0m\n" . $trace . "\n";
+                }
+            } else {
+                echo "\n[ERROR] " . get_class($exception) . "\n";
+                echo "Message: " . $message . "\n";
+                echo "File: " . $file . " (line " . $line . ")\n";
+                if ($debug) {
+                    echo "\nStack Trace:\n" . $trace . "\n";
+                }
+            }
+            exit(1);
+        }
+
         $code = $exception instanceof \ErrorException ? 500 : ($exception->getCode() ?: 500);
         if (!is_numeric($code) || $code < 400 || $code > 599) {
             $code = 500;
         }
         
         http_response_code($code);
-
-        $debug = filter_var($_ENV['APP_DEBUG'] ?? false, FILTER_VALIDATE_BOOLEAN);
-
-        $message = $exception->getMessage();
-        $file = $exception->getFile();
-        $line = $exception->getLine();
-        $trace = $exception->getTraceAsString();
 
         // Check if API request
         $accept = $_SERVER['HTTP_ACCEPT'] ?? '';
