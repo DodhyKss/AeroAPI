@@ -1,6 +1,5 @@
 {
     "name": "aero/aeroapi",
-    "version": "1.0.1",
     "description": "Minimalist, High-Performance PHP MVC Framework with Laravel Eloquent ORM & High-Precision API Benchmarking Suite.",
     "type": "project",
     "license": "MIT",
