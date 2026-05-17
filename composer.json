@@ -1,0 +1,22 @@
+{
+    "name": "aero/framework",
+    "description": "Aero Framework",
+    "require": {
+        "illuminate/database": "11.0",
+        "illuminate/events": "11.0"
+    },
+    "authors": [
+        {
+            "name": "Dodhy"
+        }
+    ],
+    "config": {
+        "preferred-install": "dist"
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.mirrors.sjtug.sjtu.edu.cn"
+        }
+    }
+}

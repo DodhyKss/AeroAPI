@@ -1,0 +1,35 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__ . '/core/Autoloader.php';
+
+$app = new \Core\Application(__DIR__);
+
+$commandName = $argv[1] ?? null;
+
+if (!$commandName) {
+    echo "AeroAPI Framework CLI\n";
+    echo "====================\n\n";
+    echo "Penggunaan: php aero [command]\n\n";
+    echo "Command yang tersedia:\n";
+    
+    $commandDir = __DIR__ . '/app/Commands';
+    if (is_dir($commandDir)) {
+        $files = scandir($commandDir);
+        foreach ($files as $file) {
+            if ($file === '.' || $file === '..' || strpos($file, 'Command.php') === false) continue;
+            $name = strtolower(str_replace('Command.php', '', $file));
+            echo "  " . $name . "\n";
+        }
+    }
+    exit;
+}
+
+$className = 'App\\Commands\\' . ucfirst($commandName) . 'Command';
+
+if (class_exists($className)) {
+    $command = new $className();
+    $command->execute($argv);
+} else {
+    echo "Command '$commandName' tidak ditemukan.\n";
+}
